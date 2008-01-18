@@ -1,0 +1,9 @@
+Parseable.pm
+t/runtests
+t/test.pl
+t/parse_list.t
+t/parse_string.t
+MANIFEST
+Parseable.pod
+Makefile.PL
+README
