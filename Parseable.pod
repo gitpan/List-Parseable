@@ -191,7 +191,6 @@ list delimeters are:
    parenthese ()
    brackets   []
    braces     {}
-   ltgt       <>
 
 The list delimiters may be separated from the list elements by
 whitespace, but this is optional except in cases where the first
@@ -210,12 +209,12 @@ For example, the list (a b c) can be written in the following ways:
 
   '( a b c )'
   '(a b c)'
-  '< a b c >'
+  '[ a b c ]'
   '{: a:b:c }'
 
 Any combination of list delimiters can be used to create nested lists:
 
-  '(a (b c) <: d:e > )'
+  '(a (b c) [: d:e ] )'
 
 There is currently no "quoting" mechanism, so there is no way to
 include the element delimiter in an element, so if an element can
@@ -230,20 +229,16 @@ followed by any element delimiter. Everything up to the closing
 list delimiter is treated as part of the list of elements. No
 nested lists can be crated. For example:
 
-  '( (a) (\ x > ) [\: b:) ] )'
+  '( (a) (\ x ] ) [\: b:) ] )'
 
 is the list:
 
   ( [ 'a' ],
-    [ 'x', '>' ],
+    [ 'x', ']' ],
     [ 'b', ')' ] )
 
 In order to include a parentheses (either left or right) in a list,
 use one of the other list delimiters with the "\" option.
-
-NOTE: be careful about including '>' or '<' as the first element of
-a list as they are operators. Use the '--' to force them to be
-elements.
 
 =head1 KNOWN OPERATIONS
 
@@ -744,6 +739,17 @@ These add a new element to the start or end of the given variable. If
 the variable refers to a scalar, it will be converted to a list.
 
 Nothing is returned.
+
+=head1 BACKWARDS INCOMPATABILITIES
+
+=over 4
+
+=item 1.01 no longer uses <> as list delimiters
+
+In order to simplify the use of the <, <=, >, and >= operators,
+the <> symbols will no longer be used as list delimiters.
+
+=back
 
 =head1 KNOWN PROBLEMS
 

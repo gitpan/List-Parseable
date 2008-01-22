@@ -7,14 +7,22 @@ package List::Parseable;
 # TODO
 ########################################################################
 
+# (type TYPE ELE0 ELE1 ...)    extracts elements of the given TYPE
+# (istype TYPE ELE0 ELE1 ...)  true of all elements are of the given TYPE
+
 ########################################################################
 # HISTORY
 ########################################################################
 
 # Version 1.00  2008-01-18
 #    Initial release
+#
+# Version 1.01  2008-01-22
+#    Removed <> as list delimiters (it makes the <, <=, >, >=
+#       operators difficult to use). This was causing tests to
+#       fail with recent versions of Text::Balanced.
 
-$VERSION = "1.00";
+$VERSION = "1.01";
 
 ########################################################################
 
@@ -238,7 +246,7 @@ sub __string_list {
    my($string,$strip) = @_;
    my($delim,$nested,$eledelim);
 
-   if ($string =~ /^\s*([\050\074\074\133\173])(\134)?([[:punct:]]\S*)?/) {
+   if ($string =~ /^\s*([\050\133\173])(\134)?([[:punct:]]\S*)?/) {
 
       my($delim,$nested,$eledelim)  = ($1,$2,$3);
       $nested   = ""  if (! $nested);
