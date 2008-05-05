@@ -740,6 +740,8 @@ the variable refers to a scalar, it will be converted to a list.
 
 Nothing is returned.
 
+=back
+
 =head1 BACKWARDS INCOMPATABILITIES
 
 =over 4
@@ -754,6 +756,11 @@ the <> symbols will no longer be used as list delimiters.
 =head1 KNOWN PROBLEMS
 
 None at this point.
+
+=head1 LICENSE
+
+This script is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself.
 
 =head1 AUTHOR
 

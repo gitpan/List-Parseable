@@ -3,6 +3,7 @@
 # This program is free software; you can redistribute it and/or modify it
 # under the same terms as Perl itself.
 
+# SB_TEST.PL
 ###############################################################################
 # HISTORY
 #
@@ -19,6 +20,12 @@
 # 2007-08-14  Better support for undef/blank args.
 #
 # 2008-01-02  Better handling of $runtests.
+#
+# 2008-01-24  Better handling of undef/blank args when arguements are
+#             entered as lists instead of strings.
+#
+# 2008-01-25  Created a global $testnum variable to store the test number
+#             in.
 
 ###############################################################################
 
@@ -200,15 +207,16 @@ sub test_Func {
    }
 
    foreach my $t (@t) {
+      $::testnum = $t;
       my @arg = @{ $tests[$t-1][0] };
       my @val = @{ $tests[$t-1][1] };
 
       # Handle undef in args
       my @tmparg = ();
       foreach my $arg (@arg) {
-	 if ($arg eq "_undef_") {
+	 if (defined $arg  &&  $arg eq "_undef_") {
 	    push(@tmparg,undef);
-	 } elsif ($arg eq "_blank_") {
+	 } elsif (defined $arg  &&  $arg eq "_blank_") {
 	    push(@tmparg,"");
 	 } else {
 	    push(@tmparg,$arg);
@@ -259,6 +267,10 @@ sub test_Func {
 	 }
       }
 
+      foreach my $arg (@arg) {
+         $arg = "_undef_"  if (! defined $arg);
+         $arg = "_blank_"  if ($arg eq "");
+      }
       my $arg = join("\n           ",@arg,@extra);
       my $ans = join("\n           ",@ans);
       my $val = join("\n           ",@val);
@@ -309,6 +321,7 @@ sub test_File {
    }
 
    foreach my $t (@t) {
+      $::testnum = $t;
       my $test = $files[$t-1];
       my $expf = "$test.exp";
       my $outf = "$test.out";

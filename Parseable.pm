@@ -11,22 +11,9 @@ package List::Parseable;
 # (istype TYPE ELE0 ELE1 ...)  true of all elements are of the given TYPE
 
 ########################################################################
-# HISTORY
-########################################################################
-
-# Version 1.00  2008-01-18
-#    Initial release
-#
-# Version 1.01  2008-01-22
-#    Removed <> as list delimiters (it makes the <, <=, >, >=
-#       operators difficult to use). This was causing tests to
-#       fail with recent versions of Text::Balanced.
-
-$VERSION = "1.01";
-
-########################################################################
 
 require 5.000;
+use warnings;
 use Text::Balanced qw(extract_bracketed extract_tagged);
 use Sort::DataTypes qw(sort_valid_method sort_by_method);
 use Storable qw(dclone);
@@ -34,6 +21,7 @@ use Number::Ops qw(:all);
 
 use strict;
 use vars qw($VERSION);
+$VERSION = "1.02";
 
 ########################################################################
 # METHODS
