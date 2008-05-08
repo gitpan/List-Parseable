@@ -17,11 +17,10 @@ use warnings;
 use Text::Balanced qw(extract_bracketed extract_tagged);
 use Sort::DataTypes qw(sort_valid_method sort_by_method);
 use Storable qw(dclone);
-use Number::Ops qw(:all);
 
 use strict;
 use vars qw($VERSION);
-$VERSION = "1.02";
+$VERSION = "1.03";
 
 ########################################################################
 # METHODS
@@ -410,7 +409,7 @@ sub _operation {
       my $ret = ($op eq "+" ? 0 : 1);
       foreach my $ele (@args) {
          if (ref($ele)  ||
-             ! isnum($ele)) {
+             ! _isnum($ele)) {
             return undef  if (_error($self,$op,$ele));
          } elsif ($op eq "+") {
             $ret += $ele;
@@ -425,8 +424,8 @@ sub _operation {
       if ($#args != 1  ||
           ref($args[0])  ||
           ref($args[1])  ||
-          ! isnum($args[0])  ||
-          ! isnum($args[1])) {
+          ! _isnum($args[0])  ||
+          ! _isnum($args[1])) {
          _error($self,$op,\@args);
          return undef;
       }
@@ -578,8 +577,8 @@ sub _operation {
       if ($#args != 1  ||
           ref($args[0])  ||
           ref($args[1])  ||
-          ! isnum($args[0])  ||
-          ! isnum($args[1])) {
+          ! _isnum($args[0])  ||
+          ! _isnum($args[1])) {
          _error($self,$op,\@args);
          return undef;
       }
@@ -591,8 +590,8 @@ sub _operation {
       if ($#args != 1  ||
           ref($args[0])  ||
           ref($args[1])  ||
-          ! isnum($args[0])  ||
-          ! isnum($args[1])) {
+          ! _isnum($args[0])  ||
+          ! _isnum($args[1])) {
          _error($self,$op,\@args);
          return undef;
       }
@@ -604,8 +603,8 @@ sub _operation {
       if ($#args != 1  ||
           ref($args[0])  ||
           ref($args[1])  ||
-          ! isnum($args[0])  ||
-          ! isnum($args[1])) {
+          ! _isnum($args[0])  ||
+          ! _isnum($args[1])) {
          _error($self,$op,\@args);
          return undef;
       }
@@ -617,8 +616,8 @@ sub _operation {
       if ($#args != 1  ||
           ref($args[0])  ||
           ref($args[1])  ||
-          ! isnum($args[0])  ||
-          ! isnum($args[1])) {
+          ! _isnum($args[0])  ||
+          ! _isnum($args[1])) {
          _error($self,$op,\@args);
          return undef;
       }
@@ -630,8 +629,8 @@ sub _operation {
       if ($#args != 1  ||
           ref($args[0])  ||
           ref($args[1])  ||
-          ! isnum($args[0])  ||
-          ! isnum($args[1])) {
+          ! _isnum($args[0])  ||
+          ! _isnum($args[1])) {
          _error($self,$op,\@args);
          return undef;
       }
@@ -643,8 +642,8 @@ sub _operation {
       if ($#args != 1  ||
           ref($args[0])  ||
           ref($args[1])  ||
-          ! isnum($args[0])  ||
-          ! isnum($args[1])) {
+          ! _isnum($args[0])  ||
+          ! _isnum($args[1])) {
          _error($self,$op,\@args);
          return undef;
       }
@@ -811,9 +810,9 @@ sub _operation {
           ref($args[0])  ||
           ref($args[1])  ||
           ref($args[2])  ||
-          ! isnum($args[0])  ||
-          ! isnum($args[1])  ||
-          ! isnum($args[2])  ||
+          ! _isnum($args[0])  ||
+          ! _isnum($args[1])  ||
+          ! _isnum($args[2])  ||
           $args[1] > $args[2]) {
          _error($self,$op,[@args]);
       }
@@ -1482,6 +1481,27 @@ sub _error {
    exit      if ($$self{"err"} eq "exit");
    return 1  if ($$self{"err"} eq "return");
    return 0;
+}
+
+########################################################################
+# FROM MY PERSONAL LIBRARIES
+########################################################################
+
+sub _isnum {
+  my($n,$low,$high)=@_;
+  return undef    if (! defined $n);
+  return 0        if ($n !~ /^\s*([+-]?)\s*(\d+\.?\d*)\s*$/  and
+                      $n !~ /^\s*([+-]?)\s*(\.\d+)\s*$/);
+  $n="$1$2";
+  if (defined $low  and  length($low)>0) {
+    return undef  if (! _isnum($low));
+    return 0      if ($n<$low);
+  }
+  if (defined $high  and  length($high)>0) {
+    return undef  if (! _isnum($high));
+    return 0  if ($n>$high);
+  }
+  return 1;
 }
 
 1;
