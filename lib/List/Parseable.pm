@@ -20,7 +20,7 @@ use Storable qw(dclone);
 
 use strict;
 use vars qw($VERSION);
-$VERSION = "1.03";
+$VERSION = "1.04";
 
 ########################################################################
 # METHODS
