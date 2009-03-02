@@ -1,5 +1,5 @@
 package List::Parseable;
-# Copyright (c) 2008-2008 Sullivan Beck. All rights reserved.
+# Copyright (c) 2008-2009 Sullivan Beck. All rights reserved.
 # This program is free software; you can redistribute it and/or modify it
 # under the same terms as Perl itself.
 
@@ -20,7 +20,7 @@ use Storable qw(dclone);
 
 use strict;
 use vars qw($VERSION);
-$VERSION = "1.04";
+$VERSION = "1.05";
 
 ########################################################################
 # METHODS
@@ -1359,7 +1359,15 @@ sub _operation {
       return undef  if ($#args != 1  ||
                         ref($args[0]));
       $$self{"vars"}{$args[0]} = $args[1];
-      return undef;
+      return $$self{"vars"}{$args[0]};
+
+   } elsif ($op eq "default") {
+      return 1  if ($test);
+      return undef  if ($#args != 1  ||
+                        ref($args[0]));
+      $$self{"vars"}{$args[0]} = $args[1]
+        unless (exists $$self{"vars"}{$args[0]});
+      return $$self{"vars"}{$args[0]};
 
    } elsif ($op eq "unsetvar") {
       return 1  if ($test);

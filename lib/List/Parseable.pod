@@ -6,23 +6,49 @@ List::Parseable - routines to work with lists containing a simple language
 
 =head1 DESCRIPTION
 
-This module allows you to treat a list as a small program. This allows
-you to do several tasks that I run into frequently:
+This module allows you to treat a list (which can be expressed as an
+actual perl list, or as a string which will be parsed to form a list)
+as a simple program which returns a value. This allows you to do
+several tasks that I run into frequently.
+
+A task that occurs often is to have a config file or a data file which
+is read in by the program. Most of the time, the data stored in these
+files is fully defined at the time it is read in, but occasionally,
+the data that you want is more complex, and is best determined at
+run time.
+
+One obvious way to do this is to build extra logic into the program
+that understands the data stored in the file and which can do
+additional operations such as supplying missing values, checking
+data validity, etc., but often, building a knowledge of the exact
+format of the data file is not desired. It leads to added complexity
+in the program, and usually, the types of checks and manipulations
+that are done are very repetitive.
+
+This module can be used to bypass some of these issues.
 
 =over 4
 
 =item Creating complex values
 
-If you need to set a variable in a config file or data file to some
-value which can only be done in a complex run-time fashion (perhaps it
-depends on a value elsewhere in the file), this allows you to set it
-to a list (or string) which may be evaluated to get the value desired.
+If you need to set a variable in a config file or a data file to some
+value which can only be determined at runtime, or which is best
+defined as some definition based on other values is the config file,
+the value can be set to a list which is interpreted using this module.
+That way, the actual value can be determined at runtime using a simple
+program.
 
-=item Describing data
+=item Supplying missing data
 
-Validity checking on a piece of data is often much more complex then
-merely checking to see that it is an integer or a date. It may have a
-range of allowed values for example.
+Defaults for missing values can be supplied.
+
+=item Describing valid data
+
+If you want to describe validity checks for data or config files,
+this can be done using this module. A piece of data can be defined
+as well as a flag which will be evaluated based on the value currently
+in the config file. If the data is invalid, the flag will be set
+accordingly.
 
 A description of the data can be written as a list which, when
 evaluated, will return true if a piece of data meets the validity
@@ -227,7 +253,7 @@ In order to include any list delimiter in an element, the left list
 delimiter must be followed immediately with an "\". It may then be
 followed by any element delimiter. Everything up to the closing
 list delimiter is treated as part of the list of elements. No
-nested lists can be crated. For example:
+nested lists can be created. For example:
 
   '( (a) (\ x ] ) [\: b:) ] )'
 
@@ -719,7 +745,13 @@ variable name or nothing is returned.
 This sets the variable VAR to the given value (which may be a list or
 a scalar).
 
-Returns nothing.
+Returns VAL.
+
+=item (default VAR VAL)
+
+This sets the values of VAR to VAL unless VAR already has a value.
+
+Returns the value of VAR.
 
 =item (unsetvar VAR)
 
@@ -739,6 +771,82 @@ These add a new element to the start or end of the given variable. If
 the variable refers to a scalar, it will be converted to a list.
 
 Nothing is returned.
+
+=back
+
+=head1 EXAMPLES
+
+=over 4
+
+=item Reading a config file
+
+A simple config file might contain a two types of lines. The first type
+would be lines which actually set a config variable to a value:
+
+  Var = Val
+
+and the second type would be lines which use this module to set more
+complex values:
+
+  Var : ( ... )
+
+You might read the file, one line at a time, in the following way:
+
+  use List::Parseable;
+  $lp     = new List::Parseable;
+  %CONFIG = ();
+
+  @lines  = ...;        # @lines contains the lines from the config file
+
+  foreach $line (@lines) {
+    if      ($line =~ /^\s*(\S+)\s*=\s*(.*?)\s*$/) {
+       set_value($1,$2);
+    } elsif ($line =~ /^\s*(\S+)\s*:\s*(.*?)\s*$/) {
+       parse_value($1,$2);
+    }
+  }
+
+  # This stores a value in a variable. The value is stored in both
+  # a global config hash and in the List::Parseable object so that
+  # the config values can be used in setting complex values.
+  #
+  sub set_value {
+     my($var,$val) = @_;
+
+     $::CONFIG{$var} = $val;
+     $lp->vars($var,$val);
+  }
+
+  # Set a complex variable using List::Parseable.
+  #
+  sub parse_value {
+     my($var,$str) = @_;
+     $lp->string("curr",$str);
+     my ($val) = $lp->eval("curr");
+     set_value($var,$val);
+  }
+
+=item Setting a complex value
+
+If you have a config file with three values: ValA, ValB, and Ave, and
+you want Ave to be the average of ValA and ValB, but you don't want to
+build this into the program that reads the data, you could have the
+following (using the program in the example for reading a config file):
+
+  ValA = 7
+  ValB = 9
+  Ave  : ( / ( + (getvar ValA) (getvar ValB) ) 2 )
+
+=item Supplying a missing value
+
+If you have a config file and you want to provide defaults for missing
+values, you can do the following:
+
+  ValA = suppliedA
+  ValA : (default ValA defaultA)
+  ValB : (default ValB defaultB)
+
+This will result in the ValA being 'suppliedA' and ValB being 'defaultB'.
 
 =back
 

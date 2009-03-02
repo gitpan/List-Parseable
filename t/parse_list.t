@@ -18,6 +18,13 @@ if ( -f "t/test.pl" ) {
 
 unshift(@INC,$dir);
 
+sub test {
+  (@test)=@_;
+  my $obj = new List::Parseable;
+  $obj->list("a",@test);
+  return $obj->eval("a");
+}
+
 $tests = 
 [
   [
@@ -28,6 +35,11 @@ $tests =
   [
     [ [ "a" ], [ "b" ] ],
     [ qw(a b) ]
+  ],
+
+  [
+    [ qw(count) ],
+    [ qw(0) ]
   ],
 
   [
@@ -50,13 +62,6 @@ $tests =
     [ qw(a c a) ]
   ],
 ];
-
-sub test {
-  (@test)=@_;
-  my $obj = new List::Parseable;
-  $obj->list("a",@test);
-  return $obj->eval("a");
-}
 
 print "List...\n";
 &test_Func(\&test,$tests,$runtests);

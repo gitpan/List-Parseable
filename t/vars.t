@@ -18,6 +18,24 @@ if ( -f "t/test.pl" ) {
 
 unshift(@INC,$dir);
 
+sub test {
+  (@test)=@_;
+  $obj = pop(@test);
+  $obj->string("a",@test);
+  return $obj->eval("a");
+}
+
+$obj = new List::Parseable;
+%hash = ( "scal1"    => "foo",
+          "scal2"    => "bar",
+          "num1"     => 7,
+          "num2"     => 9,
+          "list1"    => [ 'm','n','p' ],
+          "list2"    => [ 'h','i','j' ],
+          "nlist1"   => [ 5,6,7 ],
+          "nlist2"   => [ 20,22,24 ] );
+$obj->vars(%hash);
+
 $tests = "
 (getvar scal1)
   ~
@@ -31,6 +49,7 @@ $tests = "
 
 (getvar fake)
   ~
+  _undef_
 
 ( + (getvar nlist1) )
   ~
@@ -43,9 +62,11 @@ $tests = "
 
 (getvar scal3)
   ~
+  _undef_
 
 (setvar scal3 baz)
   ~
+  baz
 
 (getvar scal3)
   ~
@@ -53,9 +74,11 @@ $tests = "
 
 (unsetvar scal3)
   ~
+  _undef_
 
 (getvar scal3)
   ~
+  _undef_
 
 (popvar list1)
   ~
@@ -77,6 +100,7 @@ $tests = "
 
 (unshiftvar list3 x)
   ~
+  _undef_
 
 (getvar list3)
   ~
@@ -84,6 +108,7 @@ $tests = "
 
 (unshiftvar list3 y)
   ~
+  _undef_
 
 (getvar list3)
   ~
@@ -92,6 +117,7 @@ $tests = "
 
 (pushvar list4 u)
   ~
+  _undef_
 
 (getvar list4)
   ~
@@ -99,31 +125,42 @@ $tests = "
 
 (pushvar list4 v)
   ~
+  _undef_
 
 (getvar list4)
   ~
   u
   v
 
+(getvar num3)
+  ~
+  _undef_
+
+(default num3 5)
+  ~
+  5
+
+(getvar num3)
+  ~
+  5
+
+(setvar num3 10)
+  ~
+  10
+
+(getvar num3)
+  ~
+  10
+
+(default num3 5)
+  ~
+  10
+
+(getvar num3)
+  ~
+  10
+
 ";
-
-sub test {
-  (@test)=@_;
-  $obj = pop(@test);
-  $obj->string("a",@test);
-  return $obj->eval("a");
-}
-
-$obj = new List::Parseable;
-%hash = ( "scal1"    => "foo",
-          "scal2"    => "bar",
-          "num1"     => 7,
-          "num2"     => 9,
-          "list1"    => [ 'm','n','p' ],
-          "list2"    => [ 'h','i','j' ],
-          "nlist1"   => [ 5,6,7 ],
-          "nlist2"   => [ 20,22,24 ] );
-$obj->vars(%hash);
 
 print "Vars...\n";
 &test_Func(\&test,$tests,$runtests,$obj);

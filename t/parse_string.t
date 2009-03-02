@@ -18,6 +18,13 @@ if ( -f "t/test.pl" ) {
 
 unshift(@INC,$dir);
 
+sub test {
+  (@test)=@_;
+  my $obj = new List::Parseable;
+  $obj->string("a",@test);
+  return $obj->eval("a");
+}
+
 $tests = '
 ( scalar a b )
   ~
@@ -212,6 +219,7 @@ $tests = '
 
 (nth 4 a b [list a c] [d])
   ~
+  _undef_
 
 (nth -1 a b [list a c] [d])
   ~
@@ -676,13 +684,6 @@ $tests = '
   0
 
 ';
-
-sub test {
-  (@test)=@_;
-  my $obj = new List::Parseable;
-  $obj->string("a",@test);
-  return $obj->eval("a");
-}
 
 print "String...\n";
 &test_Func(\&test,$tests,$runtests);

@@ -1,4 +1,6 @@
 Build.PL
+examples/complex.pl
+examples/missing.pl
 examples/README.examples
 HISTORY
 lib/List/Parseable.pm
