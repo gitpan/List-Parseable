@@ -1,5 +1,5 @@
 package List::Parseable;
-# Copyright (c) 2008-2009 Sullivan Beck. All rights reserved.
+# Copyright (c) 2008-2010 Sullivan Beck. All rights reserved.
 # This program is free software; you can redistribute it and/or modify it
 # under the same terms as Perl itself.
 
@@ -15,12 +15,12 @@ package List::Parseable;
 require 5.000;
 use warnings;
 use Text::Balanced qw(extract_bracketed extract_tagged);
-use Sort::DataTypes qw(sort_valid_method sort_by_method);
+use Sort::DataTypes 3.00 qw(sort_valid_method sort_by_method);
 use Storable qw(dclone);
 
 use strict;
-use vars qw($VERSION);
-$VERSION = "1.05";
+our($VERSION);
+$VERSION = "1.06";
 
 ########################################################################
 # METHODS
@@ -856,7 +856,8 @@ sub _operation {
          }
       }
 
-      return sort_by_method("alphabetic",\@list);
+      sort_by_method("alphabetic",\@list);
+      return @list;
 
    } elsif ($op eq "sort_by_method") {
       return 1  if ($test);
@@ -870,8 +871,9 @@ sub _operation {
          return undef;
 
       } else {
-         return sort_by_method(@args);
+         sort_by_method(@args);
       }
+      return @{ $args[1] };
 
    } elsif ($op eq "unique") {
       return 1  if ($test);

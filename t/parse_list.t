@@ -1,22 +1,11 @@
 #!/usr/bin/perl -w
 
-require 5.001;
-use Data::Dumper;
-use IO::File;
-use List::Parseable;
-
-$runtests=shift(@ARGV);
-if ( -f "t/test.pl" ) {
-  require "t/test.pl";
-  $dir="t";
-} elsif ( -f "test.pl" ) {
-  require "test.pl";
-  $dir=".";
-} else {
-  die "ERROR: cannot find test.pl\n";
+BEGIN {
+  use Test::Inter;
+  $t = new Test::Inter 'List';
 }
 
-unshift(@INC,$dir);
+BEGIN { $t->use_ok('List::Parseable'); }
 
 sub test {
   (@test)=@_;
@@ -25,46 +14,29 @@ sub test {
   return $obj->eval("a");
 }
 
-$tests = 
-[
-  [
-    [ qw(scalar a b) ],
-    [ qw(a b) ]
-  ],
+$tests = "
+  scalar a b  => a b
 
-  [
-    [ [ "a" ], [ "b" ] ],
-    [ qw(a b) ]
-  ],
+  [ a ] [ b ] => a b
 
-  [
-    [ qw(count) ],
-    [ qw(0) ]
-  ],
+  count => 0
 
-  [
-    [ qw(count a b) ],
-    [ qw(2) ]
-  ],
+  count a b => 2
 
-  [
-    [ "count", [ "list", "a", "b" ], "c" ],
-    [ qw(2) ]
-  ],
+  count [ list a b ] c => 2
 
-  [
-    [ "compact", "a", "_blank_", [ "c" ], [ "a", "0" ] ],
-    [ qw(a c a 0) ]
-  ],
+  compact a '' [ c ] [a 0] => a c a 0
 
-  [
-    [ "true", "a", "_blank_", [ "c" ], [ "a", "0" ] ],
-    [ qw(a c a) ]
-  ],
-];
+  compact a __blank__ [ c ] [a 0] => a c a 0
 
-print "List...\n";
-&test_Func(\&test,$tests,$runtests);
+  true a '' [c] [a 0] => a c a
+
+";
+
+$t->tests(func  => \&test,
+          tests => $tests);
+$t->done_testing();
+
 
 1;
 

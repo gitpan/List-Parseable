@@ -386,7 +386,7 @@ KNOWN OPERATIONS
         All elements should be scalars. The first element MUST be a scalar
         or nothing can be returned.
 
-    ( > ELE0 ELE1 ); also >= == <= < !=
+    ( ELE0 ELE1 ); also >= == <= < !=>
         This compares ELE0 and ELE1 numerically. It returns true if ELE0 is
         greater than ELE1. The other common mathematcial operations: >=, =,
         <=, <, != are also available.
@@ -754,9 +754,36 @@ EXAMPLES
         'defaultB'.
 
 BACKWARDS INCOMPATABILITIES
-    1.01 no longer uses <> as list delimiters
+    1.01 no longer uses < as list delimiters>
         In order to simplify the use of the <, <=, >, and >= operators, the
         <> symbols will no longer be used as list delimiters.
+
+BUGS AND QUESTIONS
+    If you find a bug in this module, please send it directly to me (see the
+    AUTHOR section below). Alternately, you can submit it on CPAN. This can
+    be done at the following URL:
+
+       http://rt.cpan.org/Public/Dist/Display.html?Name=List-Parseable
+
+    Please do not use other means to report bugs (such as usenet newsgroups,
+    or forums for a specific OS or linux distribution) as it is impossible
+    for me to keep up with all of them.
+
+    When filing a bug report, please include the following information:
+
+    *   The version of the module you are using. You can get this by using
+        the script:
+
+                use List::Parseable;
+                $obj = new List::Parseable;
+                print $obj->version(),"\n";
+
+    *   The output from "perl -V"
+
+    If you have a problem using the module that perhaps isn't a bug (can't
+    figure out the syntax, etc.), you're in the right place. Go right back
+    to the top of this manual and start reading. If this still doesn't
+    answer your question, mail me directly.
 
 KNOWN PROBLEMS
     None at this point.

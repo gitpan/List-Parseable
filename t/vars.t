@@ -1,26 +1,14 @@
 #!/usr/bin/perl -w
 
-require 5.001;
-use Data::Dumper;
-use IO::File;
-use List::Parseable;
-
-$runtests=shift(@ARGV);
-if ( -f "t/test.pl" ) {
-  require "t/test.pl";
-  $dir="t";
-} elsif ( -f "test.pl" ) {
-  require "test.pl";
-  $dir=".";
-} else {
-  die "ERROR: cannot find test.pl\n";
+BEGIN {
+  use Test::Inter;
+  $t = new Test::Inter 'Vars';
 }
 
-unshift(@INC,$dir);
+BEGIN { $t->use_ok('List::Parseable'); }
 
 sub test {
   (@test)=@_;
-  $obj = pop(@test);
   $obj->string("a",@test);
   return $obj->eval("a");
 }
@@ -37,133 +25,71 @@ $obj = new List::Parseable;
 $obj->vars(%hash);
 
 $tests = "
-(getvar scal1)
-  ~
-  foo
 
-(getvar list2)
-  ~
-  h
-  i
-  j
+'(getvar scal1)' => foo
 
-(getvar fake)
-  ~
-  _undef_
+'(getvar list2)' => h i j
 
-( + (getvar nlist1) )
-  ~
-  18
+'(getvar fake)' => __undef__
 
-(difference (list getvar nlist2) (list 22))
-  ~
-  20
-  24
+'( + (getvar nlist1) )' => 18
 
-(getvar scal3)
-  ~
-  _undef_
+'(difference (list getvar nlist2) (list 22))' => 20 24
 
-(setvar scal3 baz)
-  ~
-  baz
+'(getvar scal3)' => __undef__
 
-(getvar scal3)
-  ~
-  baz
+'(setvar scal3 baz)' => baz
 
-(unsetvar scal3)
-  ~
-  _undef_
+'(getvar scal3)' => baz
 
-(getvar scal3)
-  ~
-  _undef_
+'(unsetvar scal3)' => __undef__
 
-(popvar list1)
-  ~
-  p
+'(getvar scal3)' => __undef__
 
-(getvar list1)
-  ~
-  m
-  n
+'(popvar list1)' => p
 
-(shiftvar list2)
-  ~
-  h
+'(getvar list1)' => m n
 
-(getvar list2)
-  ~
-  i
-  j
+'(shiftvar list2)' => h
 
-(unshiftvar list3 x)
-  ~
-  _undef_
+'(getvar list2)' => i j
 
-(getvar list3)
-  ~
-  x
+'(unshiftvar list3 x)' => __undef__
 
-(unshiftvar list3 y)
-  ~
-  _undef_
+'(getvar list3)' => x
 
-(getvar list3)
-  ~
-  y
-  x
+'(unshiftvar list3 y)' => __undef__
 
-(pushvar list4 u)
-  ~
-  _undef_
+'(getvar list3)' => y x
 
-(getvar list4)
-  ~
-  u
+'(pushvar list4 u)' => __undef__
 
-(pushvar list4 v)
-  ~
-  _undef_
+'(getvar list4)' => u
 
-(getvar list4)
-  ~
-  u
-  v
+'(pushvar list4 v)' => __undef__
 
-(getvar num3)
-  ~
-  _undef_
+'(getvar list4)' => u v
 
-(default num3 5)
-  ~
-  5
+'(getvar num3)' => __undef__
 
-(getvar num3)
-  ~
-  5
+'(default num3 5)' => 5
 
-(setvar num3 10)
-  ~
-  10
+'(getvar num3)' => 5
 
-(getvar num3)
-  ~
-  10
+'(setvar num3 10)' => 10
 
-(default num3 5)
-  ~
-  10
+'(getvar num3)' => 10
 
-(getvar num3)
-  ~
-  10
+'(default num3 5)' => 10
+
+'(getvar num3)' => 10
 
 ";
 
-print "Vars...\n";
-&test_Func(\&test,$tests,$runtests,$obj);
+$t->tests(func  => \&test,
+          tests => $tests);
+$t->done_testing();
+
 
 1;
 

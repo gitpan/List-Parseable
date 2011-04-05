@@ -1,11 +1,7 @@
 #!/usr/bin/perl -w
 
-$lines = "
-ValA = 7
-ValB = 9
-Ave  : ( / ( + (getvar ValA) (getvar ValB) ) 2 )
-";
-@lines = split(/\n/,$lines);
+@lines = <DATA>;
+chomp(@lines);
 
 use List::Parseable;
 $lp     = new List::Parseable;
@@ -44,3 +40,8 @@ sub parse_value {
    set_value($var,$val);
 }
 
+__DATA__
+
+ValA = 7
+ValB = 9
+Ave  : ( / ( + (getvar ValA) (getvar ValB) ) 2 )

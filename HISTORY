@@ -26,4 +26,9 @@ Version 1.05  2009-03-02
    Added default function
    Updated tests
 
-Version 1.06
+Version 1.06  2011-04-05
+   Converted tests to Test::Inter
+   Modified to support Sort::DataTypes version 3.00+
+
+Version 1.07
+

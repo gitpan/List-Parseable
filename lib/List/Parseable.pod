@@ -29,7 +29,7 @@ This module can be used to bypass some of these issues.
 
 =over 4
 
-=item Creating complex values
+=item B<Creating complex values>
 
 If you need to set a variable in a config file or a data file to some
 value which can only be determined at runtime, or which is best
@@ -38,11 +38,11 @@ the value can be set to a list which is interpreted using this module.
 That way, the actual value can be determined at runtime using a simple
 program.
 
-=item Supplying missing data
+=item B<Supplying missing data>
 
 Defaults for missing values can be supplied.
 
-=item Describing valid data
+=item B<Describing valid data>
 
 If you want to describe validity checks for data or config files,
 this can be done using this module. A piece of data can be defined
@@ -65,20 +65,20 @@ complexity) of the perl language in this case.
 
 =over 4
 
-=item new
+=item B<new>
 
   use List::Parseable;
   $obj = new List::Parseable;
 
 Creates a new List::Parseable object.
 
-=item version
+=item B<version>
 
   $version = $obj->version();
 
 Check the module version.
 
-=item list, string
+=item B<list, string>
 
   $obj->list(NAME,LIST);
   $obj->string(NAME,STRING);
@@ -89,7 +89,7 @@ under the given NAME.
 The string function takes a single string argument and converts it
 to a list (string parsing rules are described below).
 
-=item eval
+=item B<eval>
 
   $val = $obj->eval(NAME);
 
@@ -97,7 +97,7 @@ This must be called after the list or string method is used to store a
 list under the given name. It parses the list using the list parsing
 rules described below.
 
-=item errors
+=item B<errors>
 
   $obj->errors(OPTION,OPTION,...)
 
@@ -123,7 +123,7 @@ In addition, the following options may be included:
 
 The default is quiet.
 
-=item vars
+=item B<vars>
 
   $obj->vars(HASH);
 
@@ -277,7 +277,7 @@ The following basic operations are known:
 
 =over 4
 
-=item (scalar ELE0 ELE1 ...), (list ELE0 ELE1 ...)
+=item B<(scalar ELE0 ELE1 ...), (list ELE0 ELE1 ...)>
 
 These two operations determine how to treat the results of the parsing.
 Most operations take a list of scalars as arguments, but some take
@@ -302,7 +302,7 @@ on the list:
 
 =over 4
 
-=item (count ELE0 ELE1 ...)
+=item B<(count ELE0 ELE1 ...)>
 
 The count operation counts the number of arguments and returns it.
 
@@ -311,7 +311,7 @@ The count operation counts the number of arguments and returns it.
 
 All element types are allowed.
 
-=item (countval VAL ELE0 ELE1 ...)
+=item B<(countval VAL ELE0 ELE1 ...)>
 
 This returns the number of times VAL appears in the list. VAL must be a
 scalar.
@@ -320,7 +320,7 @@ scalar.
 
 All elements should be scalars.
 
-=item (minval ELE0 ELE1 ...), (maxval ELE0 ELE1 ...)
+=item B<(minval ELE0 ELE1 ...), (maxval ELE0 ELE1 ...)>
 
 This returns the numerical value who's value is the least or greatest.
 
@@ -329,7 +329,7 @@ This returns the numerical value who's value is the least or greatest.
 
 All elements should be numeric scalars.
 
-=item (nth N ELE0 ELE1 ...)
+=item B<(nth N ELE0 ELE1 ...)>
 
 This returns the Nth element of the list. Elements are numbered 0 to M
 or -(M+1) to -1.
@@ -337,7 +337,7 @@ or -(M+1) to -1.
 The first element must be an integer or nothing is returned. All
 element types are allowed for the remaining arguments.
 
-=item (case TEST0 VAL0 ... TESTN VALN [DEFAULT_VAL])
+=item B<(case TEST0 VAL0 ... TESTN VALN [DEFAULT_VAL])>
 
 All TEST elements must be scalars or nothing is returned. Values
 can be any type.
@@ -348,14 +348,14 @@ as true provides the return value.
 If no test is true, the default value is returned. If no default is
 provided, nothing is returned.
 
-=item (indexval VAL ELE0 ELE1 ...), (rindexval VAL ELE0 ELE1 ...)
+=item B<(indexval VAL ELE0 ELE1 ...), (rindexval VAL ELE0 ELE1 ...)>
 
 This returns the index of the first/last occurence of VAL in the
 list or -1 if it doesn't appear.
 
 VAL must be a scalar. All other elements should be scalars.
 
-=item (join ELE0 ELE1 ...), (join delim DEL ELE0 ELE1 ...)
+=item B<(join ELE0 ELE1 ...), (join delim DEL ELE0 ELE1 ...)>
 
 This joins all elements into a single string. By default, a
 space is used, but this can be overridden by including the "delim"
@@ -366,14 +366,14 @@ join them with a newline, or "_tab_" to join with a tab.
 
 DEL must be scalar. All others should be scalars.
 
-=item ( + ELE0 ELE1 ...), ( * ELE0 ELE1 ...)
+=item B<( + ELE0 ELE1 ...), ( * ELE0 ELE1 ...)>
 
 These return the result of adding or multiplying all of the
 elements.
 
 All elements should be numbers.
 
-=item ( - ELE0 ELE1 ), ( / ELE0 ELE1 )
+=item B<( - ELE0 ELE1 ), ( / ELE0 ELE1 )>
 
 These perform the subtraction (ELE0 - ELE1) or division (ELE0/ELE1).
 All elements must be numbers, and in the division case, ELE1 must not
@@ -385,57 +385,57 @@ The following returns true or false (1 or 0) based on the list:
 
 =over 4
 
-=item (mintrue N ELE0 ELE1 ...), (maxtrue N ELE0 ELE1 ...)
+=item B<(mintrue N ELE0 ELE1 ...), (maxtrue N ELE0 ELE1 ...)>
 
 Returns true if at least (or at most) N of the elements evaluate to true.
 
 All elements should be scalars.
 
-=item (minfalse N ELE0 ELE1 ...), (maxfalse N ELE0 ELE1 ...)
+=item B<(minfalse N ELE0 ELE1 ...), (maxfalse N ELE0 ELE1 ...)>
 
 Similar to mintrue/maxtrue but tests for false values.
 
 All elements should be scalars.
 
-=item (numtrue N ELE0 ELE1 ...), (numfalse N ELE0 ELE1 ...)
+=item B<(numtrue N ELE0 ELE1 ...), (numfalse N ELE0 ELE1 ...)>
 
 Returns true if exactly N of the elements evaluate to true (or false).
 
 All elements should be scalars.
 
-=item (and ELE0 ELE1 ...)
+=item B<(and ELE0 ELE1 ...)>
 
 Returns true if all elements evaluate to true.
 
 All elements should be scalars.
 
-=item (or ELE0 ELE1 ...)
+=item B<(or ELE0 ELE1 ...)>
 
 Returns true if any element evaluates to true.
 
 All elements should be scalars.
 
-=item (not ELE0 ELE1 ...)
+=item B<(not ELE0 ELE1 ...)>
 
 Returns true if all elements evaluate to false.
 
 All elements should be scalars.
 
-=item (member VAL ELE0 ELE1 ...)
+=item B<(member VAL ELE0 ELE1 ...)>
 
 Returns true if any element in the list is equal to the value.
 
 All elements should be scalars. The first element MUST be a scalar
 or nothing can be returned.
 
-=item (absent VAL ELE0 ELE1 ...)
+=item B<(absent VAL ELE0 ELE1 ...)>
 
 Returns true if no element in the list is equal to the value.
 
 All elements should be scalars. The first element MUST be a scalar
 or nothing can be returned.
 
-=item ( > ELE0 ELE1 ); also >= == <= < !=
+=item B<( > ELE0 ELE1 ); also >= == <= < !=>
 
 This compares ELE0 and ELE1 numerically. It returns true if ELE0
 is greater than ELE1. The other common mathematcial operations:
@@ -446,7 +446,7 @@ order to not confuse them with element delimiters.
 
 Exactly two numerical elements are required in all cases.
 
-=item ( gt ELE0 ELE1 ); also ge eq le lt ne
+=item B<( gt ELE0 ELE1 ); also ge eq le lt ne>
 
 This compares ELE0 and ELE1 alphabetically. It returns true if ELE0 is
 greater than ELE1. The other common string operations: ge, eq, le,
@@ -454,7 +454,7 @@ lt, ne are also available.
 
 Exactly two scalar elements are required in all cases.
 
-=item (if TEST), (if TEST VAL1), (if TEST VAL1 VAL2)
+=item B<(if TEST), (if TEST VAL1), (if TEST VAL1 VAL2)>
 
 This checks to see if TEST evaluates to true. If it is true,
 it returns VAL1 if it is included or true otherwise. If it
@@ -462,7 +462,7 @@ is false, it returns VAL2 if itis include or false otherwise.
 
 TEST must be a scalar. The other values can be any type.
 
-=item (is_equal LIST0 LIST1)
+=item B<(is_equal LIST0 LIST1)>
 
 This takes two list references (which should contain only scalars)
 and checks to make sure that the elements are equal (order is ignored).
@@ -471,16 +471,16 @@ If they are, true is returned. Otherwise, false is.
 If either argument is not a list reference, or if either list contains
 non-scalars, nothing is returned.
 
-=item (not_equal LIST0 LIST1)
+=item B<(not_equal LIST0 LIST1)>
 
 Similar to is_equal, but returns true if the two lists are different.
 
-=item (iff ELE0 ELE1 ...)
+=item B<(iff ELE0 ELE1 ...)>
 
 This returns true if all elements are true or all are false. It
 returns false if they are a mixture of true and false.
 
-=item (range NUM X Y); also rangeL rangeR rangeLR
+=item B<(range NUM X Y); also rangeL rangeR rangeLR>
 
 These check to make sure that NUM is in the range X to Y. All three
 must be numeric, and X must be less than (or equal) to Y.
@@ -500,14 +500,14 @@ The following manipulate a list.
 
 =over 4
 
-=item (flatten ELE0 ELE1 ...)
+=item B<(flatten ELE0 ELE1 ...)>
 
 This takes all elements (which may be scalars or nested list references)
 and returns a flat list with all of the elements from any level.
 
 All element types are allowed.
 
-=item (union ELE0 ELE1 ...)
+=item B<(union ELE0 ELE1 ...)>
 
 This combines all of the members of all of the elements (which may be
 scalars or nested lists) into a single list of elements. Only the top
@@ -517,14 +517,14 @@ level is flattened. So:
 
 All element types are allowed.
 
-=item (sort ELE0 ELE1 ...)
+=item B<(sort ELE0 ELE1 ...)>
 
 This returns the list sorted alphabetically. The list is flattened
 first.
 
 All elements should be scalars.
 
-=item (sort_by_method METHOD LIST ARG1 ARG2 ...)
+=item B<(sort_by_method METHOD LIST ARG1 ARG2 ...)>
 
 This returns the list sorted by the method given. The method can be
 any method in the Sort::DataTypes module. LIST must be a list
@@ -534,34 +534,34 @@ The first element (METHOD) must be a valid method and LIST must be a list
 reference or nothing can be returned. Other arguments must be valid for
 the sort method, but are not checked in advance.
 
-=item (unique ELE0 ELE1 ...)
+=item B<(unique ELE0 ELE1 ...)>
 
 This removes duplicate elements and returns a list of unique elements.
 
 All elements should be scalars.
 
-=item (compact ELE0 ELE1 ...)
+=item B<(compact ELE0 ELE1 ...)>
 
 This removes all empty ("") elements and returns a flat list of all
 remaining elements.
 
 All elements should be scalars.
 
-=item (true ELE0 ELE1 ...)
+=item B<(true ELE0 ELE1 ...)>
 
 This removes all elements that evaluate to false and returns a flat
 list of all remaining elements.
 
 All elements should be scalars.
 
-=item (pop ELE0 ELE1 ...), (shift ELE0 ELE1 ...)
+=item B<(pop ELE0 ELE1 ...), (shift ELE0 ELE1 ...)>
 
 This removes the last/first element from the list and returns the
 resulting list.
 
 All element types are allowed.
 
-=item (pad LENGTH ELE0 ELE1 ...)
+=item B<(pad LENGTH ELE0 ELE1 ...)>
 
 This takes a list of elements and pads it to the right with spaces
 until it is LENGTH characters long. If LENGTH is negative, it will pad
@@ -570,7 +570,7 @@ to the left.
 The first argument must be an integer or nothing will be returned.
 All others should be scalars.
 
-=item (padchar LENGTH CHAR ELE0 ELE1 ...)
+=item B<(padchar LENGTH CHAR ELE0 ELE1 ...)>
 
 This is identical to (pad ...) but it will pad with an arbitrary
 character (the 2nd argument).
@@ -579,18 +579,18 @@ The first arguement must be an integer and the 2nd argument must be a
 single character or nothing will be returned. Other elements should be
 scalars.
 
-=item (column N LIST0 LIST1 ...)
+=item B<(column N LIST0 LIST1 ...)>
 
 This returns a list of the Nth element of each of the listrefs. All
 arguments (except for the first) must be listrefs.
 
-=item (reverse ELE0 ELE1 ...)
+=item B<(reverse ELE0 ELE1 ...)>
 
 This returns the reverse of the list.
 
 All element types are allowed.
 
-=item (rotate N ELE0 ELE1 ...)
+=item B<(rotate N ELE0 ELE1 ...)>
 
 This rotates the list of element N times. If N is positive, a single
 rotation is to remove the first element and put it on the end. If N
@@ -600,24 +600,24 @@ it to the first.
 N must be an integer or nothing is returned. All element types are
 allowed for the list.
 
-=item (delete VAL ELE0 ELE1 ...)
+=item B<(delete VAL ELE0 ELE1 ...)>
 
 This removes all occurences of VAL from the list.
 
 VAL must be a scalar or nothing is returned.  All other elements
 should be scalars.
 
-=item (clear ELE0 ELE1 ...)
+=item B<(clear ELE0 ELE1 ...)>
 
 This clears all elements from the list and returns an empty list.
 
-=item (append STRING ELE0 ELE1 ...), (prepend STRING ELE0 ELE1 ...)
+=item B<(append STRING ELE0 ELE1 ...), (prepend STRING ELE0 ELE1 ...)>
 
 These append or prepend a string to all elements in the list.
 
 The first element must be a scalar. All others should be scalars.
 
-=item (splice LIST N LEN [ELE0 ELE1 ...])
+=item B<(splice LIST N LEN [ELE0 ELE1 ...])>
 
 This deletes LEN elements from LIST starting at element N and inserts
 the ELE elements in their place.
@@ -625,7 +625,7 @@ the ELE elements in their place.
 LIST must be a list reference, N and LEN must be integers (LEN must
 be zero or positive). The remaining elements can be any type.
 
-=item (slice N LEN ELE0 ELE1 ...)
+=item B<(slice N LEN ELE0 ELE1 ...)>
 
 This returns the slice of the list of elements starting with the
 Nth element and including LEN number of elements.
@@ -633,7 +633,7 @@ Nth element and including LEN number of elements.
 N and LEN must be integers (LEN must be zero or positive). The
 remaining elements can be any type.
 
-=item (fill LIST N LEN VAL)
+=item B<(fill LIST N LEN VAL)>
 
 This sets elements in LIST. The first argument is required, and must
 be a list reference. All other arguments are optional.  Elements are
@@ -698,7 +698,7 @@ and N is 4, LEN is 2, VAL is b, the resulting list is:
 (so an empty element was added to get the list out to the portion
 that was being set).
 
-=item (difference LIST0 LIST1), (d_difference LIST0 LIST1)
+=item B<(difference LIST0 LIST1), (d_difference LIST0 LIST1)>
 
 These take two lists and removes all elements in the second list from
 the first (and return the new list). The difference between the two is
@@ -709,7 +709,7 @@ second list is removed.
   (difference [list a a b c] [list a]) => (b c)
   (d_difference [list a a b c] [list a]) => (a b c)
 
-=item (intersection LIST0 LIST1), (d_intersection LIST0 LIST1)
+=item B<(intersection LIST0 LIST1), (d_intersection LIST0 LIST1)>
 
 This takes two lists and finds the intersection of the two.  The
 intersection are the elements that are in both lists. In the first
@@ -720,7 +720,7 @@ intersection.
   (intersection [list a a b c] [list a a a b]) => (a b)
   (d_intersection [list a a b c] [list a a a b]) => (a a b)
 
-=item (symdiff LIST0 LIST1), (d_symdiff LIST0 LIST1)
+=item B<(symdiff LIST0 LIST1), (d_symdiff LIST0 LIST1)>
 
 This takes the symmetric difference between two lists. The symmetric
 difference are elements that are in either list but not both. Again,
@@ -735,37 +735,37 @@ The following variable operations are known:
 
 =over 4
 
-=item (getvar VAR)
+=item B<(getvar VAR)>
 
 This returns the value of a variable named VAR. VAR must be a valid
 variable name or nothing is returned.
 
-=item (setvar VAR VAL)
+=item B<(setvar VAR VAL)>
 
 This sets the variable VAR to the given value (which may be a list or
 a scalar).
 
 Returns VAL.
 
-=item (default VAR VAL)
+=item B<(default VAR VAL)>
 
 This sets the values of VAR to VAL unless VAR already has a value.
 
 Returns the value of VAR.
 
-=item (unsetvar VAR)
+=item B<(unsetvar VAR)>
 
 Removes VAR from the defined variables.
 
 Returns nothing.
 
-=item (shiftvar VAR), (popvar VAR)
+=item B<(shiftvar VAR), (popvar VAR)>
 
 These shift or pop a value from the variable. Nothing is returned if
 the operation is not valid. Otherwise, the shifted/popped value is
 returned.
 
-=item (unshiftvar VAR VAL), (pushvar VAR VAL)
+=item B<(unshiftvar VAR VAL), (pushvar VAR VAL)>
 
 These add a new element to the start or end of the given variable. If
 the variable refers to a scalar, it will be converted to a list.
@@ -778,7 +778,7 @@ Nothing is returned.
 
 =over 4
 
-=item Reading a config file
+=item B<Reading a config file>
 
 A simple config file might contain a two types of lines. The first type
 would be lines which actually set a config variable to a value:
@@ -826,7 +826,7 @@ You might read the file, one line at a time, in the following way:
      set_value($var,$val);
   }
 
-=item Setting a complex value
+=item B<Setting a complex value>
 
 If you have a config file with three values: ValA, ValB, and Ave, and
 you want Ave to be the average of ValA and ValB, but you don't want to
@@ -837,7 +837,7 @@ following (using the program in the example for reading a config file):
   ValB = 9
   Ave  : ( / ( + (getvar ValA) (getvar ValB) ) 2 )
 
-=item Supplying a missing value
+=item B<Supplying a missing value>
 
 If you have a config file and you want to provide defaults for missing
 values, you can do the following:
@@ -854,12 +854,48 @@ This will result in the ValA being 'suppliedA' and ValB being 'defaultB'.
 
 =over 4
 
-=item 1.01 no longer uses <> as list delimiters
+=item B<1.01 no longer uses <> as list delimiters>
 
 In order to simplify the use of the <, <=, >, and >= operators,
 the <> symbols will no longer be used as list delimiters.
 
 =back
+
+=head1 BUGS AND QUESTIONS
+
+If you find a bug in this module, please send it directly to me (see
+the AUTHOR section below).  Alternately, you can submit it on CPAN. This
+can be done at the following URL:
+
+   http://rt.cpan.org/Public/Dist/Display.html?Name=List-Parseable
+
+Please do not use other means to report bugs (such as usenet newsgroups,
+or forums for a specific OS or linux distribution) as it is impossible
+for me to keep up with all of them.
+
+When filing a bug report, please include the following information:
+
+=over 4
+
+=item B<*>
+
+The version of the module you are using.  You can get this by using
+the script:
+
+        use List::Parseable;
+        $obj = new List::Parseable;
+        print $obj->version(),"\n";
+
+=item B<*>
+
+The output from "perl -V"
+
+=back
+
+If you have a problem using the module that perhaps isn't a bug (can't
+figure out the syntax, etc.), you're in the right place.  Go right back to
+the top of this manual and start reading.  If this still doesn't answer
+your question, mail me directly.
 
 =head1 KNOWN PROBLEMS
 

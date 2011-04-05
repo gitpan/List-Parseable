@@ -1,8 +1,8 @@
 Build.PL
 examples/complex.pl
 examples/missing.pl
-examples/README.examples
 HISTORY
+INSTALL
 lib/List/Parseable.pm
 lib/List/Parseable.pod
 LICENSE
@@ -14,6 +14,6 @@ t/parse_string.t
 t/pod.t
 t/pod_coverage.t
 t/runtests
-t/test.pl
+t/runtests.bat
 t/vars.t
 META.yml
